@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="dean_weather" ></dbname> <!--数据库名称-->
+
+    <!--
+       版本号
+    -->
+    <version value="1" ></version>
+
+    <!--
+        映射实体类
+        <list>
+            <mapping class="com.test.model.Reader"></mapping>
+            <mapping class="com.test.model.Magazine"></mapping>
+        </list>
+    -->
+    <list>
+        <mapping class ="com.example.dean.deanweather.db.Province"></mapping>
+        <mapping class ="com.example.dean.deanweather.db.City"></mapping>
+        <mapping class ="com.example.dean.deanweather.db.County"></mapping>
+    </list>
+
+    <!--
+        Define where the .db file should be. "internal" means the .db file
+        will be stored in the database folder of internal storage which no
+        one can access. "external" means the .db file will be stored in the
+        path to the directory on the primary external storage device where
+        the application can place persistent files it owns which everyone
+        can access. "internal" will act as default.
+        For example:
+        <storage value="external"></storage>
+    -->
+
+</litepal>
