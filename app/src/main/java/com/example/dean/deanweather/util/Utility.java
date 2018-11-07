@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.example.dean.deanweather.db.City;
 import com.example.dean.deanweather.db.County;
 import com.example.dean.deanweather.db.Province;
+import com.example.dean.deanweather.db.WeatherCities;
 import com.example.dean.deanweather.gson.Weather;
 import com.google.gson.Gson;
 
@@ -108,5 +109,19 @@ public class Utility {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 保存城市天气
+     */
+    public static void handWeahterCities(String cityName,String weatherId ) {
+        try {
+        WeatherCities weatherCities = new WeatherCities();
+        weatherCities.setCountyName(cityName);
+        weatherCities.setWeatherId(weatherId);
+        weatherCities.save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

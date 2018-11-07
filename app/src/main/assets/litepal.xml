@@ -5,7 +5,7 @@
     <!--
        版本号
     -->
-    <version value="1" ></version>
+    <version value="2" ></version>
 
     <!--
         映射实体类
@@ -18,6 +18,7 @@
         <mapping class ="com.example.dean.deanweather.db.Province"></mapping>
         <mapping class ="com.example.dean.deanweather.db.City"></mapping>
         <mapping class ="com.example.dean.deanweather.db.County"></mapping>
+        <mapping class ="com.example.dean.deanweather.db.WeatherCities"></mapping>
     </list>
 
     <!--

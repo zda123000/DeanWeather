@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.dean.deanweather.db.City;
 import com.example.dean.deanweather.db.County;
 import com.example.dean.deanweather.db.Province;
+import com.example.dean.deanweather.db.WeatherCities;
 import com.example.dean.deanweather.util.HttpUtil;
 import com.example.dean.deanweather.util.Utility;
 
@@ -85,6 +86,11 @@ public class ChooseAreaFragment extends Fragment {
      */
     private int currentLevel;
 
+    /**
+     * 查询过的城市
+     */
+    private List<WeatherCities> weatherCitiesList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,17 +117,26 @@ public class ChooseAreaFragment extends Fragment {
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
                     String weatherId = countyList.get(position).getWeatherId();
-                    if(getActivity() instanceof  MainActivity) {
+                    String cityName = countyList.get(position).getCountyName();
+                    if (getActivity() instanceof MainActivity) {
                         Intent intent = new Intent(getActivity(), WeatherActivity.class);
                         intent.putExtra("weather_id", weatherId);
                         startActivity(intent);
                         getActivity().finish();
-                    }else if(getActivity() instanceof WeatherActivity) {
+                    } else if (getActivity() instanceof WeatherActivity) {
                         WeatherActivity activity = (WeatherActivity) getActivity();
                         activity.drawerLayout.closeDrawers();
                         activity.swipeRefresh.setRefreshing(true);
                         activity.requestWeather(weatherId);
                     }
+                    //判断是否选择过城市
+                    weatherCitiesList = DataSupport.where("weatherId=?",
+                            String.valueOf(weatherId)).find(WeatherCities.class);
+                    if (weatherCitiesList.size() == 0) {
+                        //没有则保存
+                        Utility.handWeahterCities(cityName, weatherId);
+                    }
+
                 }
             }
         });
@@ -144,7 +159,6 @@ public class ChooseAreaFragment extends Fragment {
     private void queryProvinces() {
         titleText.setText("中国");
         backButton.setVisibility(View.GONE);
-        Log.d("12312312312", "2");
         provinceList = DataSupport.findAll(Province.class);
         if (provinceList.size() > 0) {
             dataList.clear();
@@ -200,6 +214,7 @@ public class ChooseAreaFragment extends Fragment {
         }
     }
 
+
     /**
      * 根据传入的地址和类型查询出省市县数据
      *
@@ -208,7 +223,6 @@ public class ChooseAreaFragment extends Fragment {
      */
     private void queryFromServer(String address, final String type) {
         showProgressDialog();
-        Log.d("12312312312", "1");
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
